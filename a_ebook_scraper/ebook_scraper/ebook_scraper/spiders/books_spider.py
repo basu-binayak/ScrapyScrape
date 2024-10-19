@@ -13,7 +13,18 @@ class BookSpider(scrapy.Spider):
         # Print a message to indicate that the response object has been received
         print("[OUR RESPONSE]")
         
+        # each book is inside an article container with class = "product_pod"
+        ebooks = response.css('article.product_pod')
+        
+        # ebooks is a Nodelist and each node is an ebook
+        for ebook in ebooks:
+            title = ebook.css('h3>a::attr(title)').get()
+            rating = ebook.css('p.star-rating::attr(class)').get().split(' ')[1]
+            price = ebook.css('div.product_price>p.price_color::text').get()
+            stock_status = ebook.css('p.instock.availability::text').getall()
+            stock_status = ''.join(stock_status).strip()
+            print(stock_status)
+        
         
 
-        print(response.css('p.star-rating').get())
-        print(response.xpath('//p[contains(@class, "star-rating")]').get())
+        
