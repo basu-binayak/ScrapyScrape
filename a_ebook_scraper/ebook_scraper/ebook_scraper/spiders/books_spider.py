@@ -32,11 +32,19 @@ class BookSpider(scrapy.Spider):
             # This selects the price text (e.g., '£45.17').
             price = ebook.css('div.product_price>p.price_color::text').get()
             
-            # Extract the stock status from the <p> tag with classes 'instock availability'.
-            # getall() retrieves all the text content inside this tag, which might be split by line breaks or spaces.
-            # ''.join(stock_status) merges the list into a single string, and strip() removes any leading/trailing whitespace.
-            stock_status = ebook.css('p.instock.availability::text').getall()
-            stock_status = ''.join(stock_status).strip()
+            # Check the class of the <i> tag within the <p> tag to determine stock availability.
+            # The class 'icon-ok' indicates that the item is in stock.
+            check_stock = ebook.css('p.instock.availability>i::attr(class)').get()
+            
+            # If the class is not 'icon-ok', set stock_status to "Not In Stock".
+            if check_stock!="icon-ok":
+                stock_status = "Not In Stock"
+            else:
+                # Extract the stock status from the <p> tag with classes 'instock availability'.
+                # getall() retrieves all the text content inside this tag, which might be split by line breaks or spaces.
+                # ''.join(stock_status) merges the list into a single string, and strip() removes any leading/trailing whitespace.
+                stock_status = ebook.css('p.instock.availability::text').getall()
+                stock_status = ''.join(stock_status).strip()
             
             # Yield a dictionary containing the extracted title, rating, price, and stock status.
             # 'yield' will return this dictionary to the calling function while keeping the state of the loop.
