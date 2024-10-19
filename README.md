@@ -187,7 +187,7 @@ This guide should help you get started with using the Scrapy shell effectively!
 # CSS Selectors v/s XPath
 
 ## Let us look at an example first!
-Let's break down your XPath expression and explain what it's doing:
+Let's break down an XPath expression and explain what it's doing:
 
 ### XPath:
 ```python
@@ -287,4 +287,4 @@ If you want to select all `<a>` elements with the class `button` and an `href` a
    //a[contains(concat(' ', @class, ' '), ' button ')][starts-with(@href, 'https')]
    ```
 
-This table should cover most common CSS selectors and their XPath equivalents! Let me know if you need further examples or explanations.
+This table should cover most common CSS selectors and their XPath equivalents! 
