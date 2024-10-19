@@ -290,6 +290,44 @@ In summary:
 - Use `::attr(attribute)` to extract specific attributes like `href`, `title`, etc.
 - Use `.get()` to get the first result, and `.getall()` to get all results.
 
+# Difference between ::attr(attribute_name) and tag[attribute_name]
+
+### 1. **Using `::attr(title)`**
+```python
+title = ebook.css('h3>a::attr(title)').get()
+```
+- **Explanation**: This expression selects the `<a>` tag that is a direct child of the `<h3>` tag and retrieves the value of its `title` attribute. 
+- **Output**: It will give you the value of the `title` attribute (e.g., "It's Only the Himalayas").
+
+### 2. **Using Attribute Selector `a[title]`**
+```python
+title = ebook.css('h3>a[title]').get()
+```
+- **Explanation**: This expression selects the `<a>` tag that is a direct child of the `<h3>` tag, but it specifically checks if the `<a>` tag has a `title` attribute. 
+- **Output**: It returns the entire `<a>` element if it exists and has a `title` attribute, not the value of the `title` attribute itself.
+
+### Key Differences
+- **Returned Value**:
+  - `::attr(title)` returns the value of the `title` attribute.
+  - `a[title]` returns the entire `<a>` element (as a NodeList or a Selector), not just the attribute value.
+  
+- **Use Case**:
+  - Use `::attr(title)` when you want the specific value of the `title` attribute.
+  - Use `a[title]` when you want to check for the existence of the `title` attribute or if you want to manipulate or further inspect the `<a>` element itself.
+
+### Example
+Given the following HTML:
+```html
+<h3>
+    <a href="catalogue/its-only-the-himalayas_981/index.html" title="It's Only the Himalayas">It's Only the Himalayas</a>
+</h3>
+```
+- The first expression will result in: `"It's Only the Himalayas"`.
+- The second expression will result in: `<a href="catalogue/its-only-the-himalayas_981/index.html" title="It's Only the Himalayas">It's Only the Himalayas</a>`, which is the entire `<a>` element. 
+
+### Conclusion
+In summary, if your goal is to get the value of the `title` attribute, you should use the first expression with `::attr(title)`. If you need the `<a>` element itself, then you can use the second expression with `a[title]`.
+
 # Difference between // and ./ in XPath
 
 In XPath, `//` and `./` are used to navigate through an XML or HTML document, but they serve different purposes. Here's a breakdown of their differences:
