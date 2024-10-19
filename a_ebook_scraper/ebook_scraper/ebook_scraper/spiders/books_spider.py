@@ -12,6 +12,8 @@ class BookSpider(scrapy.Spider):
     def parse(self, response):
         # Print a message to indicate that the response object has been received
         print("[OUR RESPONSE]")
+        
+        
 
-        # Print the full response object, which contains all the HTML, headers, etc., from the requested page
-        print(response)
+        print(response.css('p.star-rating').get())
+        print(response.xpath('//p[contains(@class, "star-rating")]').get())
