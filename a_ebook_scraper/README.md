@@ -191,6 +191,34 @@ The <a href="https://github.com/basu-binayak/ScrapyScrape/blob/38cc2688d5f06f3c5
 ### Conclusion:
 The spider was able to successfully fetch the main page of `https://books.toscrape.com/`. The request to `robots.txt` returned a `404` error, which is not an issue, and the main page was crawled without any errors. The spider then finished its execution, and no items were scraped because the `parse()` method hasn't yet been set up to extract specific data from the page.
 
+# Save scraped data(say as json)
+To save the scraped data as JSON in Scrapy, you can use the `-o` option when running your Scrapy spider from the command line. Here’s how to do it:
+
+### Command to Run Your Spider
+Assuming your spider is named `your_spider_name`, you can execute the following command in your terminal:
+
+```bash
+scrapy crawl your_spider_name -o output.json
+```
+
+### Breakdown of the Command
+- `scrapy crawl your_spider_name`: This part runs your Scrapy spider, where `your_spider_name` is the name you assigned to your spider class.
+- `-o output.json`: This option tells Scrapy to output the scraped data to a file named `output.json`. Scrapy automatically determines the format based on the file extension you provide (in this case, JSON).
+
+### Example
+If your spider is defined in a file named `spider.py`, and the spider class is named `EbookSpider`, you would run:
+
+```bash
+scrapy crawl EbookSpider -o ebooks.json
+```
+
+### Result
+After running this command, Scrapy will execute the spider and save the scraped data into a file named `ebooks.json` in the same directory from which you ran the command. The JSON file will contain the data structured according to the items yielded in your spider.
+
+### Additional Options
+- **Format**: You can specify other formats (e.g., CSV, XML) by changing the file extension. For example, `-o output.csv` would save the data in CSV format.
+- **Overwrite**: If `output.json` already exists, it will be overwritten. If you want to append the new data instead, you can use the `-a` option along with the file name (e.g., `-o output.json -a`). 
+
 # A NOTE on ::text and .get()/.getall()
 
 In Scrapy, `::text` and `.get()` serve different purposes, and they are often used together but in different contexts. Here's when to use each:
