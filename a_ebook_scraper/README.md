@@ -144,7 +144,7 @@ This prints the entire response object, which contains the HTML of the page that
 ## Scrapy Log Analysis for `BookSpider`
 
 ### Overview:
-The <a href="">log</a> is from a Scrapy run of the `BookSpider` spider, which attempts to crawl `https://books.toscrape.com/`. Below is a step-by-step analysis of the log events:
+The <a href="https://github.com/basu-binayak/ScrapyScrape/blob/38cc2688d5f06f3c513791682895e08d7c738d45/a_ebook_scraper/Logs/log_1.txt">log</a> is from a Scrapy run of the `BookSpider` spider, which attempts to crawl `https://books.toscrape.com/`. Below is a step-by-step analysis of the log events:
 
 ### 1. Scrapy Start and Initialization
 - **12:20:05 [scrapy.utils.log] INFO: Scrapy 2.11.2 started (bot: ebook_scraper)**:
