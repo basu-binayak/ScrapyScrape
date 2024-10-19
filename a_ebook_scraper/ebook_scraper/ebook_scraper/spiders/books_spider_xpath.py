@@ -3,47 +3,48 @@ import scrapy  # Importing the Scrapy framework for web scraping
 # Define a new spider class that inherits from scrapy.Spider
 class BookSpider(scrapy.Spider):
     # The name of the spider, which is used when running the spider via the command line
-    name = "books"
+    name = "books_xpath"
 
     # The list of URLs where the spider will start scraping
     start_urls = ["https://books.toscrape.com/"]
-    
+
     # This is the main callback method that will process the response from the start URLs
     def parse(self, response):
         # Print a message to indicate that the response object has been received
         print("[PARSE]")
         
-        # each book is inside an article container with class = "product_pod"
-        ebooks = response.css('article.product_pod')
+        # Each book is inside an article container with class = "product_pod"
+        # Selects all article elements with the class "product_pod" which represent individual ebooks
+        ebooks = response.xpath('//article[@class="product_pod"]')
         
         # 'ebooks' is assumed to be a list of HTML nodes, each representing an individual ebook.
         for ebook in ebooks:
             
             # Extract the title attribute from the <a> tag that is a direct child of the <h3> tag.
-            # ::attr(title) is used to select the 'title' attribute.
-            title = ebook.css('h3>a::attr(title)').get()
+            # @title is used to select the 'title' attribute.
+            title = ebook.xpath('./h3/a/@title').get()
             
             # Extract the class attribute from the <p> tag with class "star-rating".
             # The class attribute contains both 'star-rating' and the rating itself (e.g., 'Three').
             # Split the class attribute by space and get the second part, which is the actual rating (e.g., 'Three').
-            rating = ebook.css('p.star-rating::attr(class)').get().split(' ')[1]
+            rating = ebook.xpath('./p[contains(@class, "star-rating")]/@class').get().split(' ')[1]
             
             # Extract the text content inside the <p> tag with class "price_color" for the ebook price.
             # This selects the price text (e.g., '£45.17').
-            price = ebook.css('div.product_price>p.price_color::text').get()
+            price = ebook.xpath('./div[@class="product_price"]/p[@class="price_color"]/text()').get()
             
             # Check the class of the <i> tag within the <p> tag to determine stock availability.
             # The class 'icon-ok' indicates that the item is in stock.
-            check_stock = ebook.css('p.instock.availability>i::attr(class)').get()
+            check_stock = ebook.xpath('./p[@class="instock availability"]/i/@class').get()
             
             # If the class is not 'icon-ok', set stock_status to "Not In Stock".
-            if check_stock!="icon-ok":
+            if check_stock != "icon-ok":
                 stock_status = "Not In Stock"
             else:
                 # Extract the stock status from the <p> tag with classes 'instock availability'.
                 # getall() retrieves all the text content inside this tag, which might be split by line breaks or spaces.
                 # ''.join(stock_status) merges the list into a single string, and strip() removes any leading/trailing whitespace.
-                stock_status = ebook.css('p.instock.availability::text').getall()
+                stock_status = ebook.xpath('./p[@class="instock availability"]/text()').getall()
                 stock_status = ''.join(stock_status).strip()
             
             # Yield a dictionary containing the extracted title, rating, price, and stock status.
@@ -52,10 +53,5 @@ class BookSpider(scrapy.Spider):
                 'title': title,           # Title of the ebook
                 'rating': rating,         # Star rating of the ebook (e.g., 'Three', 'Four', etc.)
                 'price': price,           # Price of the ebook (e.g., '£45.17')
-                'stock_status': stock_status  # Stock availability (e.g., 'In stock')
+                'stock_status': stock_status  # Stock availability (e.g., 'In stock' or 'Not In Stock')
             }
-
-        
-        
-
-        

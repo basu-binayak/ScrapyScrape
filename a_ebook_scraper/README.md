@@ -219,6 +219,7 @@ After running this command, Scrapy will execute the spider and save the scraped 
 - **Format**: You can specify other formats (e.g., CSV, XML) by changing the file extension. For example, `-o output.csv` would save the data in CSV format.
 - **Overwrite**: If `output.json` already exists, it will be overwritten. If you want to append the new data instead, you can use the `-a` option along with the file name (e.g., `-o output.json -a`). 
 
+# NOTES on some TOPICS ( to understand code better)!
 # A NOTE on ::text and .get()/.getall()
 
 In Scrapy, `::text` and `.get()` serve different purposes, and they are often used together but in different contexts. Here's when to use each:
@@ -288,3 +289,47 @@ In summary:
 - Use `::text` when you want to target the text inside an element.
 - Use `::attr(attribute)` to extract specific attributes like `href`, `title`, etc.
 - Use `.get()` to get the first result, and `.getall()` to get all results.
+
+# Difference between // and ./ in XPath
+
+In XPath, `//` and `./` are used to navigate through an XML or HTML document, but they serve different purposes. Here's a breakdown of their differences:
+
+### `//`
+- **Definition**: The `//` selector is used to select nodes in the document from the current node that match the selection, regardless of their location in the hierarchy.
+- **Usage**: It can be used to select nodes at any level of the tree structure.
+- **Example**: 
+    - `//div` selects all `<div>` elements in the document, regardless of their depth or parent elements.
+    - `//a/@href` selects the `href` attributes of all `<a>` elements anywhere in the document.
+
+### `./`
+- **Definition**: The `./` selector is used to select nodes relative to the current node. It explicitly indicates that the selection should start from the current context node.
+- **Usage**: It's generally used to specify that you want to look for child nodes or attributes directly under the current node.
+- **Example**:
+    - `./div` selects only the `<div>` elements that are direct children of the current node.
+    - `./a/@href` selects the `href` attributes of `<a>` elements that are direct children of the current context node.
+
+### Key Differences
+- **Context**: `//` searches through the entire document tree, while `./` limits the search to the current context.
+- **Scope**: `//` can traverse multiple levels up and down the tree, while `./` restricts itself to the immediate children or attributes of the current node.
+- **Performance**: Using `//` may be less efficient than `./` when you want to limit the search to a specific subtree, as `//` checks all levels.
+
+### Example Illustrating the Difference
+Consider the following HTML structure:
+
+```html
+<div>
+    <span>
+        <a href="link1.html">Link 1</a>
+    </span>
+    <span>
+        <a href="link2.html">Link 2</a>
+    </span>
+</div>
+```
+
+- `//a` will select both `<a>` elements in the document.
+- `./a` (when executed in the context of a `<span>` element) will only select the `<a>` element that is a direct child of that specific `<span>`. If used in the context of the `<div>`, it won't return any results because there are no `<a>` elements that are direct children of the `<div>`.
+
+### Summary
+- Use `//` to search for nodes anywhere in the document.
+- Use `./` to search for nodes that are directly related to the current context node.
