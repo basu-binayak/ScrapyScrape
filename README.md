@@ -186,7 +186,55 @@ This guide should help you get started with using the Scrapy shell effectively!
 
 # CSS Selectors v/s XPath
 
-Here’s a comprehensive table that matches each CSS selector with its equivalent XPath expression.
+## Let us look at an example first!
+Let's break down your XPath expression and explain what it's doing:
+
+### XPath:
+```python
+response.xpath("//h3/a[starts-with(@title,'S')]/@title").getall()
+```
+
+1. `//h3/a`:  
+   This selects all `<a>` elements that are direct children of an `<h3>` element, anywhere in the document.
+
+2. `[starts-with(@title, 'S')]`:  
+   This filters the `<a>` elements by checking whether the `title` attribute starts with the letter `'S'`. Only the `<a>` elements that meet this condition will be selected.
+
+3. `/@title`:  
+   Once the filtering is done, this part extracts the value of the `title` attribute from the selected `<a>` elements.
+
+4. `.getall()`:  
+   This returns a list of all matching `title` attribute values.
+
+### CSS Equivalent:
+
+In CSS, we can use the `^=` operator to match attributes that start with a specific string. The CSS equivalent for this XPath would be:
+
+```python
+response.css('h3 > a[title^="S"]::attr(title)').getall()
+```
+
+### CSS Breakdown:
+1. `'h3 > a'`:  
+   This selects all `<a>` elements that are direct children of an `<h3>` element.
+
+2. `[title^="S"]`:  
+   This filters the `<a>` elements by checking if their `title` attribute starts with the letter `'S'`. The `^=` operator means "starts with."
+
+3. `::attr(title)`:  
+   This extracts the value of the `title` attribute from the selected `<a>` elements.
+
+4. `.getall()`:  
+   Similar to XPath, this returns a list of all matching `title` attribute values.
+
+### Summary:
+- **XPath**: `response.xpath("//h3/a[starts-with(@title,'S')]/@title").getall()`
+- **CSS**: `response.css('h3 > a[title^="S"]::attr(title)').getall()`
+
+Both methods achieve the same result: they return a list of `title` attribute values from `<a>` elements under `<h3>` tags, where the `title` starts with the letter `'S'`.
+
+## Comprehensice Coverage
+Here’s a **comprehensive table that matches each CSS selector with its equivalent XPath expression**.
 
 | **CSS Selector**                     | **Description**                                            | **XPath Equivalent**                                            |
 |--------------------------------------|------------------------------------------------------------|-----------------------------------------------------------------|
