@@ -155,6 +155,25 @@ If you need help while in the shell, you can use:
   help(response.css)  # Provides help on the CSS selector
   ```
 
+## 10. **Enhanced Shell - IPython with Scrapy***
+
+### Steps:
+
+1. **Install IPython** (if you haven't already):
+   ```bash
+   pip install ipython
+   ```
+
+2. **Run Scrapy Shell**:
+   Once **IPython** is installed, simply running the Scrapy shell will automatically launch it with IPython's interactive features:
+   ```bash
+   scrapy shell 'https://quotes.toscrape.com/'
+   ```
+
+When you run this, Scrapy will automatically detect that IPython is installed and use it instead of the default Python shell.
+
+This is the simplest way to use IPython with Scrapy!
+
 ## Example Usage
 
 Here’s a complete example of using the Scrapy shell to extract quotes from a webpage:
