@@ -14,7 +14,7 @@
 
 # items.py
 import scrapy
-from scrapy.loader.processors import MapCompose, TakeFirst, Join
+from itemloaders.processors import MapCompose
 
 # Define the Item class and associate processors for each field
 class EbookItem(scrapy.Item):
